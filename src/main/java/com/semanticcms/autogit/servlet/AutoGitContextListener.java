@@ -38,8 +38,6 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.text.ParseException;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -467,7 +465,7 @@ public class AutoGitContextListener implements ServletContextListener {
 	{
 		// Java 1.8: Inline this
 		List<GitStatus.UncommittedChange> emptyList = Collections.emptyList();
-		status = new GitStatus(Instant.now(), GitStatus.State.STARTING, emptyList);
+		status = new GitStatus(System.currentTimeMillis(), GitStatus.State.STARTING, emptyList);
 	}
 
 	/**
@@ -480,7 +478,7 @@ public class AutoGitContextListener implements ServletContextListener {
 	 * TODO: Add timeout within this method?
 	 */
 	private void updateGitStatus() throws IOException, ParseException {
-		Instant now = Instant.now();
+		long now = System.currentTimeMillis();
 		Path gtl;
 		synchronized(gitToplevelLock) {
 			gtl = gitToplevel;
@@ -589,11 +587,11 @@ public class AutoGitContextListener implements ServletContextListener {
 	 * Gets the current Git status, will not block.
 	 */
 	public GitStatus getGitStatus() {
-		Instant now = Instant.now();
+		long now = System.currentTimeMillis();
 		synchronized(statusLock) {
 			// Timeout when status not updated recently enough
-			Instant statusTime = status.getStatusTime();
-			long millisSince = Duration.between(statusTime, now).toMillis();
+			long statusTime = status.getStatusTime();
+			long millisSince = now - statusTime;
 			if(
 				millisSince >= TIMEOUT_MILLIS
 				|| millisSince <= -TIMEOUT_MILLIS // Can happen when system time reset
