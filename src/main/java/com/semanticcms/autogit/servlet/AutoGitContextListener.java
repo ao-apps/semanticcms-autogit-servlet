@@ -26,6 +26,8 @@ import com.aoindustries.lang.ProcessResult;
 import com.aoindustries.util.StringUtility;
 import com.aoindustries.util.WrappedException;
 import com.semanticcms.autogit.model.GitStatus;
+import com.semanticcms.autogit.model.State;
+import com.semanticcms.autogit.model.UncommittedChange;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;
@@ -464,8 +466,8 @@ public class AutoGitContextListener implements ServletContextListener {
 	private GitStatus status;
 	{
 		// Java 1.8: Inline this
-		List<GitStatus.UncommittedChange> emptyList = Collections.emptyList();
-		status = new GitStatus(System.currentTimeMillis(), GitStatus.State.STARTING, emptyList);
+		List<UncommittedChange> emptyList = Collections.emptyList();
+		status = new GitStatus(System.currentTimeMillis(), State.STARTING, emptyList);
 	}
 
 	/**
@@ -486,8 +488,8 @@ public class AutoGitContextListener implements ServletContextListener {
 		GitStatus newStatus;
 		if(gtl == null) {
 			// Java 1.8: Inline this
-			List<GitStatus.UncommittedChange> emptyList = Collections.emptyList();
-			newStatus = new GitStatus(now, GitStatus.State.DISABLED, emptyList);
+			List<UncommittedChange> emptyList = Collections.emptyList();
+			newStatus = new GitStatus(now, State.DISABLED, emptyList);
 		} else {
 			// Get a list of modules including "" for main module
 			List<String> modules;
@@ -510,8 +512,8 @@ public class AutoGitContextListener implements ServletContextListener {
 				modules.add("");
 			}
 			// Get the status of each module
-			GitStatus.State state = GitStatus.State.SYNCHRONIZED;
-			List<GitStatus.UncommittedChange> uncommittedChanges = new ArrayList<>();
+			State state = State.SYNCHRONIZED;
+			List<UncommittedChange> uncommittedChanges = new ArrayList<>();
 			for(String module : modules) {
 				if(DEBUG) log("Getting status of module \"" + module + "\"");
 				File workingDir;
@@ -565,10 +567,10 @@ public class AutoGitContextListener implements ServletContextListener {
 						log("from = \"" + from + "\"");
 						log("to = \"" + to + "\"");
 					}
-					GitStatus.UncommittedChange uncommittedChange = new GitStatus.UncommittedChange(x, y, module, from, to);
+					UncommittedChange uncommittedChange = new UncommittedChange(x, y, module, from, to);
 					uncommittedChanges.add(uncommittedChange);
 					// Keep the highest state
-					GitStatus.State meaningState = uncommittedChange.getMeaning().getState();
+					State meaningState = uncommittedChange.getMeaning().getState();
 					if(meaningState.compareTo(state) > 0) state = meaningState;
 				}
 			}
@@ -597,8 +599,8 @@ public class AutoGitContextListener implements ServletContextListener {
 				|| millisSince <= -TIMEOUT_MILLIS // Can happen when system time reset
 			) {
 				// Java 1.8: Inline this
-				List<GitStatus.UncommittedChange> emptyList = Collections.emptyList();
-				return new GitStatus(statusTime, GitStatus.State.TIMEOUT, emptyList);
+				List<UncommittedChange> emptyList = Collections.emptyList();
+				return new GitStatus(statusTime, State.TIMEOUT, emptyList);
 			}
 			// Return most recently determined status
 			return status;
