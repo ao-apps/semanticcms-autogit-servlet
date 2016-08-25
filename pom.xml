@@ -46,12 +46,28 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 		<tag>HEAD</tag>
 	</scm>
 
-	<!-- TODO
+	<!-- Java 1.7+ required for watching for file changes -->
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.7</source>
+						<target>1.7</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
 	<dependencies>
 		<dependency>
-			<groupId>com.aoindustries</groupId>
-			<artifactId>ao-io-buffer</artifactId>
-			<version>1.2</version>
+			<groupId>javax</groupId>
+			<artifactId>javaee-web-api</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId>
@@ -60,9 +76,8 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 		</dependency>
 		<dependency>
 			<groupId>com.semanticcms</groupId>
-			<artifactId>semanticcms-core-model</artifactId>
-			<version>1.4</version>
+			<artifactId>semanticcms-autogit-model</artifactId>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-	-->
 </project>
