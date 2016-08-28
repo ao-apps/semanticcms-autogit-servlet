@@ -50,6 +50,7 @@ import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.ServletRequest;
 import javax.servlet.annotation.WebListener;
 
 @WebListener("Manages automatic Git repository interactions.")
@@ -609,5 +610,27 @@ public class AutoGitContextListener implements ServletContextListener {
 
 	public static AutoGitContextListener getInstance(ServletContext sc) {
 		return (AutoGitContextListener)sc.getAttribute(APPLICATION_SCOPE_KEY);
+	}
+
+	private static final String GIT_STATUS_REQUEST_CACHE_KEY = AutoGitContextListener.class.getName() + ".getGitStatus.cache";
+
+	public static GitStatus getGitStatus(
+		ServletContext servletContext,
+		ServletRequest request
+	) {
+		// Look for cached value
+		GitStatus gitStatus = (GitStatus)request.getAttribute(GIT_STATUS_REQUEST_CACHE_KEY);
+		if(gitStatus == null) {
+			AutoGitContextListener gitContext = AutoGitContextListener.getInstance(servletContext);
+			if(gitContext == null) {
+				// Java 1.8: Inline this
+				List<UncommittedChange> emptyList = Collections.emptyList();
+				gitStatus = new GitStatus(System.currentTimeMillis(), State.DISABLED, emptyList);
+			} else {
+				gitStatus = gitContext.getGitStatus();
+			}
+			request.setAttribute(GIT_STATUS_REQUEST_CACHE_KEY, gitStatus);
+		}
+		return gitStatus;
 	}
 }
