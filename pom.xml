@@ -27,7 +27,7 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 	<parent>
 		<groupId>com.semanticcms</groupId>
 		<artifactId>semanticcms-autogit</artifactId>
-		<version>1.0</version>
+		<version>1.1-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.semanticcms</groupId>
@@ -64,9 +64,9 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 
 	<dependencies>
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-web-api</artifactId>
-			<version>6.0</version>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
