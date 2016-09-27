@@ -87,21 +87,26 @@ public class AutoGitContextListener implements ServletContextListener {
 
 	private static final String GIT_TOPLEVEL_CONTEXT_PARAM = "git.toplevel";
 
-	private final Object servletContextLock = new Object();
+	private static class ServletContextLock {}
+	private final ServletContextLock servletContextLock = new ServletContextLock();
 	private ServletContext servletContext;
 
-	private final Object gitToplevelLock = new Object();
+	private static class GitToplevelLock {}
+	private final GitToplevelLock gitToplevelLock = new GitToplevelLock();
 	private Path gitToplevel;
 
-	private final Object watcherLock = new Object();
+	private static class WatcherLock {}
+	private final WatcherLock watcherLock = new WatcherLock();
 	private WatchService watcher; // Will be set to null when context shutdown
 
 	private final Map<Path,WatchKey> registered = new HashMap<>();
 
-	private final Object watcherThreadLock = new Object();
+	private static class WatcherThreadLock {}
+	private final WatcherThreadLock watcherThreadLock = new WatcherThreadLock();
 	private Thread watcherThread; // Set to null when context shutdown
 
-	private final Object changedThreadLock = new Object();
+	private static class ChangedThreadLock {}
+	private final ChangedThreadLock changedThreadLock = new ChangedThreadLock();
 	private Thread changedThread; // Set to null when context shutdown
 
 	@Override
@@ -244,7 +249,8 @@ public class AutoGitContextListener implements ServletContextListener {
 	}
 
 	/** Flag set to true whenever a possible change is detected */
-	private final Object changedLock = new Object();
+	private static class ChangedLock {}
+	private final ChangedLock changedLock = new ChangedLock();
 	private boolean changed = false;
 
 	// Java 1.8: Use Lambda
@@ -463,7 +469,8 @@ public class AutoGitContextListener implements ServletContextListener {
 		}
 	}
 
-	private final Object statusLock = new Object();
+	private static class StatusLock {}
+	private final StatusLock statusLock = new StatusLock();
 	private GitStatus status;
 	{
 		// Java 1.8: Inline this
