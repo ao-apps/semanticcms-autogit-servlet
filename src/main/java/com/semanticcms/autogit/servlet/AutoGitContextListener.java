@@ -277,6 +277,8 @@ public class AutoGitContextListener implements ServletContextListener {
 						// Normal on shutdown
 						return;
 					} catch(InterruptedException e) {
+						// Restore the interrupted status
+						Thread.currentThread().interrupt();
 						// Repeat loop
 						continue;
 					}
@@ -331,6 +333,8 @@ public class AutoGitContextListener implements ServletContextListener {
 					try {
 						Thread.sleep(10000);
 					} catch(InterruptedException e) {
+						// Restore the interrupted status
+						Thread.currentThread().interrupt();
 						// Continue loop
 					}
 				}
@@ -386,6 +390,8 @@ public class AutoGitContextListener implements ServletContextListener {
 								try {
 									changedLock.wait(millisToWait);
 								} catch(InterruptedException e) {
+									// Restore the interrupted status
+									Thread.currentThread().interrupt();
 									// Normal on shutdown
 								}
 							}
@@ -397,6 +403,8 @@ public class AutoGitContextListener implements ServletContextListener {
 						try {
 							Thread.sleep(AFTER_CHANGE_DELAY);
 						} catch(InterruptedException e) {
+							// Restore the interrupted status
+							Thread.currentThread().interrupt();
 							// Continue on
 						}
 					}
@@ -407,6 +415,8 @@ public class AutoGitContextListener implements ServletContextListener {
 					try {
 						Thread.sleep(AFTER_EXCEPTION_DELAY);
 					} catch(InterruptedException e) {
+						// Restore the interrupted status
+						Thread.currentThread().interrupt();
 						// Continue loop
 					}
 				}
