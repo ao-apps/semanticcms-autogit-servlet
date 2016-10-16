@@ -80,6 +80,13 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 								</compilerArguments>
 							</configuration>
 						</plugin>
+						<!-- Java 1.8 javadoc bug: https://bugs.openjdk.java.net/browse/JDK-8041628
+							"class file for java.lang.FunctionalInterface not found"
+							Java 1.9: Activate this, it's only to generate the more accurate javadocs so
+							not worth the complexity of trying to selectively enable this on two conditions:
+							1) bootclasspaths profile active
+							2) and jdk >= 1.9
+
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-javadoc-plugin</artifactId>
@@ -87,6 +94,7 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 								<bootclasspath>${bootclasspath.jdk17}</bootclasspath>
 							</configuration>
 						</plugin>
+						-->
 					</plugins>
 				</pluginManagement>
 			</build>
