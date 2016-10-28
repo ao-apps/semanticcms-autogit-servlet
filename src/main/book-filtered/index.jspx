@@ -36,7 +36,7 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 	>
 		<core:child page="apidocs/index.jspx" />
 		<p>
-			<core:link page="/index.jspx">SemanticCMS automatic Git</core:link> in a Servlet environment.
+			<core:link book="/autogit" page="/index.jspx">SemanticCMS automatic Git</core:link> in a Servlet environment.
 		</p>
 		<section:section label="Project Links">
 			<ul>
