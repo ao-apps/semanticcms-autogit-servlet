@@ -3,6 +3,7 @@
 
 ## Project Links
 * [Project Home](https://semanticcms.com/autogit/servlet/)
+* [Changelog](https://semanticcms.com/autogit/servlet/changelog)
 * [API Docs](https://semanticcms.com/autogit/servlet/apidocs/)
 * [Maven Central Repository](https://search.maven.org/#search%7Cgav%7C1%7Cg:%22com.semanticcms%22%20AND%20a:%22semanticcms-autogit-servlet%22)
 * [GitHub](https://github.com/aoindustries/semanticcms-autogit-servlet)
