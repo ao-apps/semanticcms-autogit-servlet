@@ -30,7 +30,7 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 	</parent>
 
 	<groupId>com.semanticcms</groupId><artifactId>semanticcms-autogit-servlet</artifactId><version>1.3.4-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>bundle</packaging>
 
 	<properties>
 		<!-- Java 1.7+ required for watching for file changes -->
