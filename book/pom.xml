@@ -34,8 +34,7 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 
 	<properties>
 		<!-- These values are copied from the project being documented -->
-		<documented.groupId>com.semanticcms</documented.groupId>
-		<documented.artifactId>semanticcms-autogit-servlet</documented.artifactId>
+		<documented.groupId>com.semanticcms</documented.groupId><documented.artifactId>semanticcms-autogit-servlet</documented.artifactId>
 		<documented.javaVersion>1.7</documented.javaVersion>
 		<documented.javac.link.javaApi>${javac.link.javaApi.jdk17}</documented.javac.link.javaApi>
 		<documented.name>SemanticCMS 1 AutoGit Servlet</documented.name>
