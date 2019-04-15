@@ -33,16 +33,6 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 	<packaging>bundle</packaging>
 
 	<properties>
-		<!-- Java 1.7+ required for watching for file changes -->
-		<javaVersion>1.7</javaVersion>
-		<compiler.bootclasspath>${bootclasspath.jdk17}</compiler.bootclasspath>
-		<!--
-			Java 1.8 javadoc bug: https://bugs.openjdk.java.net/browse/JDK-8041628
-			Java 1.9: Set this back to jdk17.
-		-->
-		<javac.bootclasspath>${bootclasspath.jdk18}</javac.bootclasspath>
-		<javac.link.javaApi>${javac.link.javaApi.jdk17}</javac.link.javaApi>
-
 		<javadoc.breadcrumbs><![CDATA[<a target="_top" href="https://semanticcms.com/">SemanticCMS</a>
 / <a target="_top" href="https://semanticcms.com/autogit/">AutoGit</a>
 / <a target="_top" href="${project.url}">${shortTitle}</a>]]></javadoc.breadcrumbs>
