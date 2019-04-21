@@ -25,7 +25,7 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.semanticcms</groupId><artifactId>semanticcms-parent</artifactId><version>1.1.1-validation-SNAPSHOT</version>
+		<groupId>com.semanticcms</groupId><artifactId>semanticcms-parent</artifactId><version>1.1.0</version>
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 
@@ -81,13 +81,13 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.aoindustries</groupId><artifactId>ao-lang</artifactId><version>2.0.1-validation-SNAPSHOT</version>
+			<groupId>com.aoindustries</groupId><artifactId>ao-lang</artifactId><version>2.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.aoindustries</groupId><artifactId>aocode-public</artifactId><version>2.0.1-validation-SNAPSHOT</version>
+			<groupId>com.aoindustries</groupId><artifactId>aocode-public</artifactId><version>2.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.semanticcms</groupId><artifactId>semanticcms-autogit-model</artifactId><version>1.4.4-validation-SNAPSHOT</version>
+			<groupId>com.semanticcms</groupId><artifactId>semanticcms-autogit-model</artifactId><version>1.4.3</version>
 		</dependency>
 	</dependencies>
 </project>
