@@ -1,6 +1,6 @@
 /*
  * semanticcms-autogit-servlet - SemanticCMS automatic Git in a Servlet environment.
- * Copyright (C) 2016, 2018  AO Industries, Inc.
+ * Copyright (C) 2016, 2018, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -523,7 +523,7 @@ public class AutoGitContextListener implements ServletContextListener {
 			State state = State.SYNCHRONIZED;
 			List<UncommittedChange> uncommittedChanges = new ArrayList<>();
 			for(String module : modules) {
-				if(DEBUG) log("Getting status of module \"" + module + "\"");
+				if(DEBUG) log("Getting status of module \"" + module + '"');
 				File workingDir;
 				if(module.isEmpty()) {
 					// Main module
@@ -570,10 +570,10 @@ public class AutoGitContextListener implements ServletContextListener {
 						}
 					}
 					if(DEBUG) {
-						log("x = \"" + x + "\"");
-						log("y = \"" + y + "\"");
-						log("from = \"" + from + "\"");
-						log("to = \"" + to + "\"");
+						log("x = \"" + x + '"');
+						log("y = \"" + y + '"');
+						log("from = \"" + from + '"');
+						log("to = \"" + to + '"');
 					}
 					UncommittedChange uncommittedChange = new UncommittedChange(x, y, module, from, to);
 					uncommittedChanges.add(uncommittedChange);
