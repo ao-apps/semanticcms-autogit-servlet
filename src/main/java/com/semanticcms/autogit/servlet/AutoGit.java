@@ -23,7 +23,7 @@
 package com.semanticcms.autogit.servlet;
 
 import com.aoindustries.lang.ProcessResult;
-import com.aoindustries.util.StringUtility;
+import com.aoindustries.lang.Strings;
 import com.aoindustries.util.WrappedException;
 import com.semanticcms.autogit.model.GitStatus;
 import com.semanticcms.autogit.model.State;
@@ -128,7 +128,7 @@ public class AutoGit {
 	private AutoGit(ServletContext servletContext) throws IOException {
 		this.servletContext = servletContext;
 		// Find the top level directory
-		String gitToplevelPath = StringUtility.trimNullIfEmpty(servletContext.getInitParameter(GIT_TOPLEVEL_CONTEXT_PARAM));
+		String gitToplevelPath = Strings.trimNullIfEmpty(servletContext.getInitParameter(GIT_TOPLEVEL_CONTEXT_PARAM));
 		File gitToplevelRaw;
 		if(gitToplevelPath == null) {
 			// Default to web root
@@ -444,7 +444,7 @@ public class AutoGit {
 			Process p = pb.start();
 			ProcessResult result = ProcessResult.getProcessResult(p);
 			if(result.getExitVal() != 0) throw new IOException("Unable to find submodules: " + result.getStderr());
-			List<String> submodules = StringUtility.splitLines(result.getStdout());
+			List<String> submodules = Strings.splitLines(result.getStdout());
 			if(DEBUG) {
 				for(String submodule : submodules) log("Got submodule: " + submodule);
 			}
@@ -473,7 +473,7 @@ public class AutoGit {
 			ProcessResult result = ProcessResult.getProcessResult(p);
 			if(result.getExitVal() != 0) throw new IOException("Unable to get status: " + result.getStderr());
 			// Split on NUL (ASCII 0)
-			List<String> split = new ArrayList<>(StringUtility.splitString(result.getStdout(), (char)0));
+			List<String> split = new ArrayList<>(Strings.splitString(result.getStdout(), (char)0));
 			if(!split.isEmpty()) {
 				// Remove last empty part of split
 				String last = split.remove(split.size()-1);
