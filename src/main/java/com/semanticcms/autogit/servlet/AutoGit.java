@@ -473,7 +473,7 @@ public class AutoGit {
 			ProcessResult result = ProcessResult.getProcessResult(p);
 			if(result.getExitVal() != 0) throw new IOException("Unable to get status: " + result.getStderr());
 			// Split on NUL (ASCII 0)
-			List<String> split = new ArrayList<>(Strings.splitString(result.getStdout(), (char)0));
+			List<String> split = new ArrayList<>(Strings.split(result.getStdout(), (char)0));
 			if(!split.isEmpty()) {
 				// Remove last empty part of split
 				String last = split.remove(split.size()-1);
