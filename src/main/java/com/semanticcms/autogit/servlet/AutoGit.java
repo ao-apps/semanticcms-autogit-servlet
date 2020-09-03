@@ -271,6 +271,7 @@ public class AutoGit {
 	private final ChangedLock changedLock = new ChangedLock();
 	private boolean changed = false;
 
+	@SuppressWarnings({"SleepWhileInLoop", "UseSpecificCatch", "TooBroadCatch"})
 	private final Runnable watcherRunnable = () -> {
 		while(true) {
 			try {
@@ -349,6 +350,7 @@ public class AutoGit {
 		}
 	};
 
+	@SuppressWarnings({"SleepWhileInLoop", "UseSpecificCatch", "TooBroadCatch"})
 	private final Runnable changedRunnable = () -> {
 		while(true) {
 			try {
@@ -446,7 +448,9 @@ public class AutoGit {
 			if(result.getExitVal() != 0) throw new IOException("Unable to find submodules: " + result.getStderr());
 			List<String> submodules = Strings.splitLines(result.getStdout());
 			if(DEBUG) {
-				for(String submodule : submodules) log("Got submodule: " + submodule);
+				for(String submodule : submodules) {
+					log("Got submodule: " + submodule);
+				}
 			}
 			// Add the empty module list
 			modules = new ArrayList<>(submodules.size() + 1);
