@@ -22,7 +22,6 @@
  */
 package com.semanticcms.autogit.servlet;
 
-import com.aoindustries.exception.WrappedException;
 import com.aoindustries.lang.ProcessResult;
 import com.aoindustries.lang.Strings;
 import com.semanticcms.autogit.model.GitStatus;
@@ -30,6 +29,7 @@ import com.semanticcms.autogit.model.State;
 import com.semanticcms.autogit.model.UncommittedChange;
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -99,7 +99,7 @@ public class AutoGit {
 				servletContext.setAttribute(APPLICATION_ATTRIBUTE, instance);
 				instance.start();
 			} catch(IOException e) {
-				throw new WrappedException(e);
+				throw new UncheckedIOException(e);
 			}
 		}
 
@@ -185,7 +185,7 @@ public class AutoGit {
 			try {
 				w.close();
 			} catch(IOException e) {
-				throw new WrappedException(e);
+				throw new UncheckedIOException(e);
 			}
 		}
 
