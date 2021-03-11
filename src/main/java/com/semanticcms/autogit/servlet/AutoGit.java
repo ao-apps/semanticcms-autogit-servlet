@@ -1,6 +1,6 @@
 /*
  * semanticcms-autogit-servlet - SemanticCMS automatic Git in a Servlet environment.
- * Copyright (C) 2016, 2018, 2020  AO Industries, Inc.
+ * Copyright (C) 2016, 2018, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -119,7 +119,7 @@ public class AutoGit {
 
 	private volatile WatchService watcher; // Set to null when stopped
 
-	private final Map<Path,WatchKey> registered = new HashMap<>();
+	private final Map<Path, WatchKey> registered = new HashMap<>();
 
 	private volatile Thread watcherThread; // Set to null when stopped
 
@@ -191,7 +191,7 @@ public class AutoGit {
 
 		synchronized(registered) {
 			/*
-			for(Map.Entry<Path,WatchKey> entry : registered.entrySet()) {
+			for(Map.Entry<Path, WatchKey> entry : registered.entrySet()) {
 				if(DEBUG) log("Canceling watch key: " + entry.getKey());
 				entry.getValue().cancel();
 			}*/
