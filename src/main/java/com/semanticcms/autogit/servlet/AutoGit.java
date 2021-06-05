@@ -22,8 +22,8 @@
  */
 package com.semanticcms.autogit.servlet;
 
-import com.aoindustries.lang.ProcessResult;
-import com.aoindustries.lang.Strings;
+import com.aoapps.lang.ProcessResult;
+import com.aoapps.lang.Strings;
 import com.semanticcms.autogit.model.GitStatus;
 import com.semanticcms.autogit.model.State;
 import com.semanticcms.autogit.model.UncommittedChange;
