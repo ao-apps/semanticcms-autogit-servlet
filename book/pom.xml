@@ -29,7 +29,7 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 		<relativePath>../../../parent/pom.xml</relativePath>
 	</parent>
 
-	<groupId>com.semanticcms</groupId><artifactId>semanticcms-autogit-servlet-book</artifactId><version>1.5.0</version>
+	<groupId>com.semanticcms</groupId><artifactId>semanticcms-autogit-servlet-book</artifactId><version>1.5.0-POST-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
 	<properties>
@@ -74,7 +74,7 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 		<connection>scm:git:git://github.com/aoindustries/semanticcms-autogit-servlet.git</connection>
 		<developerConnection>scm:git:git@github.com:aoindustries/semanticcms-autogit-servlet.git</developerConnection>
 		<url>https://github.com/aoindustries/semanticcms-autogit-servlet</url>
-		<tag>semanticcms-autogit-servlet-book-1.5.0</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
