@@ -24,6 +24,7 @@ package com.semanticcms.autogit.servlet;
 
 import com.aoapps.lang.ProcessResult;
 import com.aoapps.lang.Strings;
+import com.aoapps.servlet.attribute.ScopeEE;
 import com.semanticcms.autogit.model.GitStatus;
 import com.semanticcms.autogit.model.State;
 import com.semanticcms.autogit.model.UncommittedChange;
@@ -57,7 +58,8 @@ public class AutoGit {
 
 	private static final boolean DEBUG = false; // false for production releases
 
-	private static final String APPLICATION_ATTRIBUTE = AutoGit.class.getName();
+	private static final ScopeEE.Application.Attribute<AutoGit> APPLICATION_ATTRIBUTE =
+		ScopeEE.APPLICATION.attribute(AutoGit.class.getName());
 
 	/**
 	 * The lock file used by Git that ignored for file changes.
@@ -96,7 +98,7 @@ public class AutoGit {
 			try {
 				ServletContext servletContext = event.getServletContext();
 				instance = new AutoGit(servletContext);
-				servletContext.setAttribute(APPLICATION_ATTRIBUTE, instance);
+				APPLICATION_ATTRIBUTE.context(servletContext).set(instance);
 				instance.start();
 			} catch(IOException e) {
 				throw new UncheckedIOException(e);
@@ -105,7 +107,7 @@ public class AutoGit {
 
 		@Override
 		public void contextDestroyed(ServletContextEvent event) {
-			event.getServletContext().removeAttribute(APPLICATION_ATTRIBUTE);
+			APPLICATION_ATTRIBUTE.context(event.getServletContext()).remove();
 			if(instance != null) {
 				instance.stop();
 				instance = null;
@@ -549,26 +551,24 @@ public class AutoGit {
 	 * Gets the current instance or {@code null} when disabled.
 	 */
 	public static AutoGit getInstance(ServletContext sc) {
-		return (AutoGit)sc.getAttribute(APPLICATION_ATTRIBUTE);
+		return APPLICATION_ATTRIBUTE.context(sc).get();
 	}
 
-	private static final String GIT_STATUS_REQUEST_CACHE_KEY = AutoGit.class.getName() + ".getGitStatus.cache";
+	private static final ScopeEE.Request.Attribute<GitStatus> GIT_STATUS_REQUEST_CACHE_KEY =
+		ScopeEE.REQUEST.attribute(AutoGit.class.getName() + ".getGitStatus.cache");
 
 	public static GitStatus getGitStatus(
 		ServletContext servletContext,
 		ServletRequest request
 	) {
 		// Look for cached value
-		GitStatus gitStatus = (GitStatus)request.getAttribute(GIT_STATUS_REQUEST_CACHE_KEY);
-		if(gitStatus == null) {
+		return GIT_STATUS_REQUEST_CACHE_KEY.context(request).computeIfAbsent(__ -> {
 			AutoGit gitContext = getInstance(servletContext);
 			if(gitContext == null) {
-				gitStatus = new GitStatus(System.currentTimeMillis(), State.DISABLED, Collections.emptyList());
+				return new GitStatus(System.currentTimeMillis(), State.DISABLED, Collections.emptyList());
 			} else {
-				gitStatus = gitContext.getGitStatus();
+				return gitContext.getGitStatus();
 			}
-			request.setAttribute(GIT_STATUS_REQUEST_CACHE_KEY, gitStatus);
-		}
-		return gitStatus;
+		});
 	}
 }

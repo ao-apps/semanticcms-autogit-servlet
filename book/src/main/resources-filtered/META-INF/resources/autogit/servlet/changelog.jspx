@@ -37,7 +37,7 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-30T15:41:03-05:00"
-		dateModified="2021-07-18T21:37:29-05:00"
+		dateModified="2021-09-28T19:53:50-05:00"
 	>
 		<c:if test="${fn:endsWith('@{project.version}', '-SNAPSHOT') and !fn:endsWith('@{project.version}', '-POST-SNAPSHOT')}">
 			<changelog:release
@@ -50,6 +50,7 @@ along with semanticcms-autogit-servlet.  If not, see <http://www.gnu.org/license
 			>
 				<ul>
 					<li>Updated for <core:link book="/" page="/" /> 2 compatibility.</li>
+					<li>Updated dependencies.</li>
 				</ul>
 			</changelog:release>
 		</c:if>
