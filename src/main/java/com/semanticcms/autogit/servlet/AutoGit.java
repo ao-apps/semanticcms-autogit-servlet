@@ -330,7 +330,7 @@ public class AutoGit {
 				if(setChanged) {
 					synchronized(changedLock) {
 						changed = true;
-						changedLock.notify();
+						changedLock.notify(); // notifyAll() not needed: only a single thread waiting
 					}
 				}
 				boolean valid = key.reset();
