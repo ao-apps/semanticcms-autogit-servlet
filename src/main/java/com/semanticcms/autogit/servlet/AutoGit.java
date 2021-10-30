@@ -275,7 +275,7 @@ public class AutoGit {
 
 	@SuppressWarnings({"SleepWhileInLoop", "UseSpecificCatch", "TooBroadCatch"})
 	private final Runnable watcherRunnable = () -> {
-		while(true) {
+		while(!Thread.currentThread().isInterrupted()) {
 			try {
 				// Stop when thread set to null
 				if(watcherThread == null) return;
@@ -290,8 +290,9 @@ public class AutoGit {
 					// Normal on shutdown
 					return;
 				} catch(InterruptedException e) {
-					// Repeat loop
-					continue;
+					// Restore the interrupted status
+					Thread.currentThread().interrupt();
+					break;
 				}
 				boolean doResync = false;
 				boolean setChanged = false;
@@ -346,7 +347,9 @@ public class AutoGit {
 				try {
 					Thread.sleep(10000);
 				} catch(InterruptedException e) {
-					// Continue loop
+					log(null, e);
+					// Restore the interrupted status
+					Thread.currentThread().interrupt();
 				}
 			}
 		}
@@ -354,7 +357,7 @@ public class AutoGit {
 
 	@SuppressWarnings({"SleepWhileInLoop", "UseSpecificCatch", "TooBroadCatch"})
 	private final Runnable changedRunnable = () -> {
-		while(true) {
+		while(!Thread.currentThread().isInterrupted()) {
 			try {
 				// Stop when thread set to null
 				if(changedThread == null) return;
@@ -370,7 +373,7 @@ public class AutoGit {
 				synchronized(changedLock) {
 					while(true) {
 						// Stop when thread set to null
-						if(changedThread == null) return;
+						if(changedThread == null || Thread.currentThread().isInterrupted()) return;
 						// Check if changed
 						if(changed) {
 							changeReceived = true;
@@ -394,6 +397,8 @@ public class AutoGit {
 							try {
 								changedLock.wait(millisToWait);
 							} catch(InterruptedException e) {
+								// Restore the interrupted status
+								Thread.currentThread().interrupt();
 								// Stop when thread set to null
 								if(changedThread == null) return;
 								log(null, e);
@@ -407,7 +412,8 @@ public class AutoGit {
 					try {
 						Thread.sleep(AFTER_CHANGE_DELAY);
 					} catch(InterruptedException e) {
-						// Continue on
+						// Restore the interrupted status
+						Thread.currentThread().interrupt();
 					}
 				}
 			} catch(ThreadDeath td) {
@@ -419,7 +425,9 @@ public class AutoGit {
 				try {
 					Thread.sleep(AFTER_EXCEPTION_DELAY);
 				} catch(InterruptedException e) {
-					// Continue loop
+					log(null, e);
+					// Restore the interrupted status
+					Thread.currentThread().interrupt();
 				}
 			}
 		}
