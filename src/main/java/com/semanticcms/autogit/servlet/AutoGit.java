@@ -269,7 +269,7 @@ public class AutoGit {
 	}
 
 	/** Flag set to true whenever a possible change is detected */
-	private static class ChangedLock {}
+	private static class ChangedLock {/* Empty lock class to help heap profile */}
 	private final ChangedLock changedLock = new ChangedLock();
 	private boolean changed = false;
 
