@@ -60,7 +60,7 @@ public class AutoGit {
   private static final boolean DEBUG = false; // false for production releases
 
   private static final ScopeEE.Application.Attribute<AutoGit> APPLICATION_ATTRIBUTE =
-    ScopeEE.APPLICATION.attribute(AutoGit.class.getName());
+      ScopeEE.APPLICATION.attribute(AutoGit.class.getName());
 
   /**
    * The lock file used by Git that ignored for file changes.
@@ -215,13 +215,12 @@ public class AutoGit {
     }
 
     synchronized (registered) {
-      /*
-      for (Map.Entry<Path, WatchKey> entry : registered.entrySet()) {
-        if (DEBUG) {
-          log("Canceling watch key: " + entry.getKey());
-        }
-        entry.getValue().cancel();
-      }*/
+//      for (Map.Entry<Path, WatchKey> entry : registered.entrySet()) {
+//        if (DEBUG) {
+//          log("Canceling watch key: " + entry.getKey());
+//        }
+//        entry.getValue().cancel();
+//      }
       registered.clear();
     }
   }
@@ -257,10 +256,10 @@ public class AutoGit {
   private void resync(WatchService w, Path path, Set<Path> extraKeys) throws IOException {
     assert Thread.holdsLock(registered);
     if (
-      Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)
-      // Skip .git directory "index.lock" files
-      && !path.endsWith(GIT_LOCK_FILE)
-      // && !path.endsWith(".git")
+        Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)
+            // Skip .git directory "index.lock" files
+            && !path.endsWith(GIT_LOCK_FILE)
+    // && !path.endsWith(".git")
     ) {
       WatchKey key = registered.get(path);
       if (key == null) {
@@ -268,26 +267,26 @@ public class AutoGit {
           log("Registering watch key: " + path);
         }
         registered.put(
-          path,
-          path.register(
-            w,
-            StandardWatchEventKinds.ENTRY_CREATE,
-            StandardWatchEventKinds.ENTRY_DELETE,
-            StandardWatchEventKinds.ENTRY_MODIFY
-          )
+            path,
+            path.register(
+                w,
+                StandardWatchEventKinds.ENTRY_CREATE,
+                StandardWatchEventKinds.ENTRY_DELETE,
+                StandardWatchEventKinds.ENTRY_MODIFY
+            )
         );
       } else if (!key.isValid()) {
         if (DEBUG) {
           log("Replacing invalid watch key: " + path);
         }
         registered.put(
-          path,
-          path.register(
-            w,
-            StandardWatchEventKinds.ENTRY_CREATE,
-            StandardWatchEventKinds.ENTRY_DELETE,
-            StandardWatchEventKinds.ENTRY_MODIFY
-          )
+            path,
+            path.register(
+                w,
+                StandardWatchEventKinds.ENTRY_CREATE,
+                StandardWatchEventKinds.ENTRY_DELETE,
+                StandardWatchEventKinds.ENTRY_MODIFY
+            )
         );
       }
       extraKeys.remove(path);
@@ -299,8 +298,12 @@ public class AutoGit {
     }
   }
 
-  /** Flag set to true whenever a possible change is detected */
-  private static class ChangedLock {/* Empty lock class to help heap profile */}
+  /**
+   * Flag set to true whenever a possible change is detected
+   */
+  private static class ChangedLock {
+    // Empty lock class to help heap profile
+  }
   private final ChangedLock changedLock = new ChangedLock();
   private boolean changed = false;
 
@@ -341,12 +344,12 @@ public class AutoGit {
             doResync = true;
             setChanged = true;
           } else if (
-            kind == StandardWatchEventKinds.ENTRY_CREATE
-            || kind == StandardWatchEventKinds.ENTRY_DELETE
-            || kind == StandardWatchEventKinds.ENTRY_MODIFY
+              kind == StandardWatchEventKinds.ENTRY_CREATE
+                  || kind == StandardWatchEventKinds.ENTRY_DELETE
+                  || kind == StandardWatchEventKinds.ENTRY_MODIFY
           ) {
             @SuppressWarnings("unchecked")
-            WatchEvent<Path> ev = (WatchEvent<Path>)event;
+            WatchEvent<Path> ev = (WatchEvent<Path>) event;
             Path filename = ev.context();
             if (filename.endsWith(GIT_LOCK_FILE)) {
               if (DEBUG) {
@@ -512,8 +515,8 @@ public class AutoGit {
         log("Finding modules");
       }
       ProcessBuilder pb =
-        new ProcessBuilder("git", "submodule", "--quiet", "foreach", "--recursive", "echo \"$path\"")
-        .directory(gitToplevel.toFile());
+          new ProcessBuilder("git", "submodule", "--quiet", "foreach", "--recursive", "echo \"$path\"")
+              .directory(gitToplevel.toFile());
       Process p = pb.start();
       ProcessResult result = ProcessResult.getProcessResult(p);
       if (result.getExitVal() != 0) {
@@ -546,18 +549,18 @@ public class AutoGit {
         workingDir = new File(gitToplevel.toFile(), module);
       }
       ProcessBuilder pb =
-        new ProcessBuilder("git", "status", "--porcelain", "-z")
-        .directory(workingDir);
+          new ProcessBuilder("git", "status", "--porcelain", "-z")
+              .directory(workingDir);
       Process p = pb.start();
       ProcessResult result = ProcessResult.getProcessResult(p);
       if (result.getExitVal() != 0) {
         throw new IOException("Unable to get status: " + result.getStderr());
       }
       // Split on NUL (ASCII 0)
-      List<String> split = new ArrayList<>(Strings.split(result.getStdout(), (char)0));
+      List<String> split = new ArrayList<>(Strings.split(result.getStdout(), (char) 0));
       if (!split.isEmpty()) {
         // Remove last empty part of split
-        String last = split.remove(split.size()-1);
+        String last = split.remove(split.size() - 1);
         if (!last.isEmpty()) {
           throw new ParseException("Last element of split is not empty: " + last, 0);
         }
@@ -625,8 +628,8 @@ public class AutoGit {
     long statusTime = gs.getStatusTime();
     long millisSince = now - statusTime;
     if (
-      millisSince >= TIMEOUT_MILLIS
-      || millisSince <= -TIMEOUT_MILLIS // Can happen when system time reset
+        millisSince >= TIMEOUT_MILLIS
+            || millisSince <= -TIMEOUT_MILLIS // Can happen when system time reset
     ) {
       return new GitStatus(statusTime, State.TIMEOUT, Collections.emptyList());
     }
@@ -642,11 +645,11 @@ public class AutoGit {
   }
 
   private static final ScopeEE.Request.Attribute<GitStatus> GIT_STATUS_REQUEST_CACHE_KEY =
-    ScopeEE.REQUEST.attribute(AutoGit.class.getName() + ".getGitStatus.cache");
+      ScopeEE.REQUEST.attribute(AutoGit.class.getName() + ".getGitStatus.cache");
 
   public static GitStatus getGitStatus(
-    ServletContext servletContext,
-    ServletRequest request
+      ServletContext servletContext,
+      ServletRequest request
   ) {
     // Look for cached value
     return GIT_STATUS_REQUEST_CACHE_KEY.context(request).computeIfAbsent(__ -> {
