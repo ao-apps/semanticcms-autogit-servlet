@@ -305,7 +305,7 @@ public class AutoGit {
     // Empty lock class to help heap profile
   }
   private final ChangedLock changedLock = new ChangedLock();
-  private boolean changed = false;
+  private boolean changed;
 
   @SuppressWarnings({"SleepWhileInLoop", "UseSpecificCatch", "TooBroadCatch"})
   private final Runnable watcherRunnable = () -> {
