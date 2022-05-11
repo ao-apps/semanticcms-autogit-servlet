@@ -55,6 +55,9 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletRequest;
 import javax.servlet.annotation.WebListener;
 
+/**
+ * Tracks the current git status.
+ */
 public class AutoGit {
 
   private static final boolean DEBUG = false; // false for production releases
@@ -83,12 +86,15 @@ public class AutoGit {
   private static final long AFTER_EXCEPTION_DELAY = 10000;
 
   /**
-   * The number of milliseconds that status not updated until considered "TIMEOUT"
+   * The number of milliseconds that status not updated until considered "TIMEOUT".
    */
   private static final long TIMEOUT_MILLIS = GIT_PULL_MILLIS * 2;
 
   private static final String GIT_TOPLEVEL_CONTEXT_PARAM = "git.toplevel";
 
+  /**
+   * Manages automatic Git repository interactions.
+   */
   @WebListener("Manages automatic Git repository interactions.")
   public static class Initializer implements ServletContextListener {
 
@@ -215,12 +221,12 @@ public class AutoGit {
     }
 
     synchronized (registered) {
-//      for (Map.Entry<Path, WatchKey> entry : registered.entrySet()) {
-//        if (DEBUG) {
-//          log("Canceling watch key: " + entry.getKey());
-//        }
-//        entry.getValue().cancel();
-//      }
+      //for (Map.Entry<Path, WatchKey> entry : registered.entrySet()) {
+      //  if (DEBUG) {
+      //    log("Canceling watch key: " + entry.getKey());
+      //  }
+      //  entry.getValue().cancel();
+      //}
       registered.clear();
     }
   }
@@ -299,11 +305,12 @@ public class AutoGit {
   }
 
   /**
-   * Flag set to true whenever a possible change is detected
+   * Flag set to true whenever a possible change is detected.
    */
   private static class ChangedLock {
     // Empty lock class to help heap profile
   }
+
   private final ChangedLock changedLock = new ChangedLock();
   private boolean changed;
 
@@ -507,32 +514,32 @@ public class AutoGit {
    * TODO: Add timeout within this method?
    */
   private void updateGitStatus() throws IOException, ParseException {
-    long now = System.currentTimeMillis();
+    final long now = System.currentTimeMillis();
     // Get a list of modules including "" for main module
     List<String> modules;
-    {
-      if (DEBUG) {
-        log("Finding modules");
-      }
-      ProcessBuilder pb =
-          new ProcessBuilder("git", "submodule", "--quiet", "foreach", "--recursive", "echo \"$path\"")
-              .directory(gitToplevel.toFile());
-      Process p = pb.start();
-      ProcessResult result = ProcessResult.getProcessResult(p);
-      if (result.getExitVal() != 0) {
-        throw new IOException("Unable to find submodules: " + result.getStderr());
-      }
-      List<String> submodules = Strings.splitLines(result.getStdout());
-      if (DEBUG) {
-        for (String submodule : submodules) {
-          log("Got submodule: " + submodule);
+      {
+        if (DEBUG) {
+          log("Finding modules");
         }
+        ProcessBuilder pb =
+            new ProcessBuilder("git", "submodule", "--quiet", "foreach", "--recursive", "echo \"$path\"")
+                .directory(gitToplevel.toFile());
+        Process p = pb.start();
+        ProcessResult result = ProcessResult.getProcessResult(p);
+        if (result.getExitVal() != 0) {
+          throw new IOException("Unable to find submodules: " + result.getStderr());
+        }
+        List<String> submodules = Strings.splitLines(result.getStdout());
+        if (DEBUG) {
+          for (String submodule : submodules) {
+            log("Got submodule: " + submodule);
+          }
+        }
+        // Add the empty module list
+        modules = new ArrayList<>(submodules.size() + 1);
+        modules.addAll(submodules);
+        modules.add("");
       }
-      // Add the empty module list
-      modules = new ArrayList<>(submodules.size() + 1);
-      modules.addAll(submodules);
-      modules.add("");
-    }
     // Get the status of each module
     State state = State.SYNCHRONIZED;
     List<UncommittedChange> uncommittedChanges = new ArrayList<>();
@@ -574,26 +581,26 @@ public class AutoGit {
         char y;
         String from;
         String to;
-        {
-          String first = split.get(i++);
-          if (first.length() < 3) {
-            throw new ParseException("split1 length too short: " + first.length(), 0);
+          {
+            String first = split.get(i++);
+            if (first.length() < 3) {
+              throw new ParseException("split1 length too short: " + first.length(), 0);
+            }
+            x = first.charAt(0);
+            y = first.charAt(1);
+            if (first.charAt(2) != ' ') {
+              throw new ParseException("Third character of split1 is not a space: " + first.charAt(2), 0);
+            }
+            if (x == 'R') {
+              // Is rename, will have both to and from
+              to = first.substring(3);
+              from = split.get(i++);
+            } else {
+              // Will have from only from
+              to = null;
+              from = first.substring(3);
+            }
           }
-          x = first.charAt(0);
-          y = first.charAt(1);
-          if (first.charAt(2) != ' ') {
-            throw new ParseException("Third character of split1 is not a space: " + first.charAt(2), 0);
-          }
-          if (x == 'R') {
-            // Is rename, will have both to and from
-            to = first.substring(3);
-            from = split.get(i++);
-          } else {
-            // Will have from only from
-            to = null;
-            from = first.substring(3);
-          }
-        }
         if (DEBUG) {
           log("x = \"" + x + '"');
           log("y = \"" + y + '"');
@@ -647,12 +654,15 @@ public class AutoGit {
   private static final ScopeEE.Request.Attribute<GitStatus> GIT_STATUS_REQUEST_CACHE_KEY =
       ScopeEE.REQUEST.attribute(AutoGit.class.getName() + ".getGitStatus.cache");
 
+  /**
+   * Gets the current git status.
+   */
   public static GitStatus getGitStatus(
       ServletContext servletContext,
       ServletRequest request
   ) {
     // Look for cached value
-    return GIT_STATUS_REQUEST_CACHE_KEY.context(request).computeIfAbsent(__ -> {
+    return GIT_STATUS_REQUEST_CACHE_KEY.context(request).computeIfAbsent(name -> {
       AutoGit gitContext = getInstance(servletContext);
       if (gitContext == null) {
         return new GitStatus(System.currentTimeMillis(), State.DISABLED, Collections.emptyList());
