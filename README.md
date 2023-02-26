@@ -23,7 +23,7 @@
 * [Project Home](https://semanticcms.com/autogit/servlet/)
 * [Changelog](https://semanticcms.com/autogit/servlet/changelog)
 * [API Docs](https://semanticcms.com/autogit/servlet/apidocs/)
-* [Maven Central Repository](https://search.maven.org/artifact/com.semanticcms/semanticcms-autogit-servlet)
+* [Maven Central Repository](https://central.sonatype.com/search?namespace=com.semanticcms&q=a%3Asemanticcms-autogit-servlet)
 * [GitHub](https://github.com/ao-apps/semanticcms-autogit-servlet)
 
 ## Contact Us
