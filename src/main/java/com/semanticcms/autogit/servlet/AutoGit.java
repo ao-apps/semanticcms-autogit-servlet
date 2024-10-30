@@ -1,6 +1,6 @@
 /*
  * semanticcms-autogit-servlet - SemanticCMS automatic Git in a Servlet environment.
- * Copyright (C) 2016, 2018, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2016, 2018, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -507,11 +507,11 @@ public class AutoGit {
   /**
    * Updates the current Git status, will block on I/O.
    * Automatically does git pull and git push when there are no uncommitted changes.
-   * <p>
-   * Called on startup.
-   * Also called when file change detected and the Git status should be updated.
-   * </p>
-   * TODO: Add timeout within this method?
+   *
+   * <p>Called on startup.
+   * Also called when file change detected and the Git status should be updated.</p>
+   *
+   * <p>TODO: Add timeout within this method?</p>
    */
   private void updateGitStatus() throws IOException, ParseException {
     final long now = System.currentTimeMillis();
