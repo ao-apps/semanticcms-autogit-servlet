@@ -1,6 +1,6 @@
 /*
  * semanticcms-autogit-servlet - SemanticCMS automatic Git in a Servlet environment.
- * Copyright (C) 2016, 2018, 2020, 2021, 2022, 2024  AO Industries, Inc.
+ * Copyright (C) 2016, 2018, 2020, 2021, 2022, 2024, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -517,29 +517,29 @@ public class AutoGit {
     final long now = System.currentTimeMillis();
     // Get a list of modules including "" for main module
     List<String> modules;
-      {
-        if (DEBUG) {
-          log("Finding modules");
-        }
-        ProcessBuilder pb =
-            new ProcessBuilder("git", "submodule", "--quiet", "foreach", "--recursive", "echo \"$path\"")
-                .directory(gitToplevel.toFile());
-        Process p = pb.start();
-        ProcessResult result = ProcessResult.getProcessResult(p);
-        if (result.getExitVal() != 0) {
-          throw new IOException("Unable to find submodules: " + result.getStderr());
-        }
-        List<String> submodules = Strings.splitLines(result.getStdout());
-        if (DEBUG) {
-          for (String submodule : submodules) {
-            log("Got submodule: " + submodule);
-          }
-        }
-        // Add the empty module list
-        modules = new ArrayList<>(submodules.size() + 1);
-        modules.addAll(submodules);
-        modules.add("");
+    {
+      if (DEBUG) {
+        log("Finding modules");
       }
+      ProcessBuilder pb =
+          new ProcessBuilder("git", "submodule", "--quiet", "foreach", "--recursive", "echo \"$path\"")
+              .directory(gitToplevel.toFile());
+      Process p = pb.start();
+      ProcessResult result = ProcessResult.getProcessResult(p);
+      if (result.getExitVal() != 0) {
+        throw new IOException("Unable to find submodules: " + result.getStderr());
+      }
+      List<String> submodules = Strings.splitLines(result.getStdout());
+      if (DEBUG) {
+        for (String submodule : submodules) {
+          log("Got submodule: " + submodule);
+        }
+      }
+      // Add the empty module list
+      modules = new ArrayList<>(submodules.size() + 1);
+      modules.addAll(submodules);
+      modules.add("");
+    }
     // Get the status of each module
     State state = State.SYNCHRONIZED;
     List<UncommittedChange> uncommittedChanges = new ArrayList<>();
@@ -581,26 +581,26 @@ public class AutoGit {
         char y;
         String from;
         String to;
-          {
-            String first = split.get(i++);
-            if (first.length() < 3) {
-              throw new ParseException("split1 length too short: " + first.length(), 0);
-            }
-            x = first.charAt(0);
-            y = first.charAt(1);
-            if (first.charAt(2) != ' ') {
-              throw new ParseException("Third character of split1 is not a space: " + first.charAt(2), 0);
-            }
-            if (x == 'R') {
-              // Is rename, will have both to and from
-              to = first.substring(3);
-              from = split.get(i++);
-            } else {
-              // Will have from only from
-              to = null;
-              from = first.substring(3);
-            }
+        {
+          String first = split.get(i++);
+          if (first.length() < 3) {
+            throw new ParseException("split1 length too short: " + first.length(), 0);
           }
+          x = first.charAt(0);
+          y = first.charAt(1);
+          if (first.charAt(2) != ' ') {
+            throw new ParseException("Third character of split1 is not a space: " + first.charAt(2), 0);
+          }
+          if (x == 'R') {
+            // Is rename, will have both to and from
+            to = first.substring(3);
+            from = split.get(i++);
+          } else {
+            // Will have from only from
+            to = null;
+            from = first.substring(3);
+          }
+        }
         if (DEBUG) {
           log("x = \"" + x + '"');
           log("y = \"" + y + '"');
