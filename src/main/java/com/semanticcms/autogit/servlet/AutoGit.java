@@ -221,12 +221,12 @@ public class AutoGit {
     }
 
     synchronized (registered) {
-      //for (Map.Entry<Path, WatchKey> entry : registered.entrySet()) {
-      //  if (DEBUG) {
-      //    log("Canceling watch key: " + entry.getKey());
-      //  }
-      //  entry.getValue().cancel();
-      //}
+      // for (Map.Entry<Path, WatchKey> entry : registered.entrySet()) {
+      //   if (DEBUG) {
+      //     log("Canceling watch key: " + entry.getKey());
+      //   }
+      //   entry.getValue().cancel();
+      // }
       registered.clear();
     }
   }
@@ -572,9 +572,9 @@ public class AutoGit {
           throw new ParseException("Last element of split is not empty: " + last, 0);
         }
       }
-      //if ((split.size() % 2) != 0) {
-      //  throw new ParseException("Unexpected split size: " + split.size(), 0);
-      //}
+      // if ((split.size() % 2) != 0) {
+      //   throw new ParseException("Unexpected split size: " + split.size(), 0);
+      // }
       int i = 0;
       while (i < split.size()) {
         char x;
