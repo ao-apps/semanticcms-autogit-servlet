@@ -1,6 +1,6 @@
 /*
  * semanticcms-autogit-servlet - SemanticCMS automatic Git in a Servlet environment.
- * Copyright (C) 2016, 2018, 2020, 2021, 2022, 2024, 2025  AO Industries, Inc.
+ * Copyright (C) 2016, 2018, 2020, 2021, 2022, 2024, 2025, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -29,6 +29,11 @@ import com.aoapps.servlet.attribute.ScopeEE;
 import com.semanticcms.autogit.model.GitStatus;
 import com.semanticcms.autogit.model.State;
 import com.semanticcms.autogit.model.UncommittedChange;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.annotation.WebListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -49,11 +54,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRequest;
-import javax.servlet.annotation.WebListener;
 
 /**
  * Tracks the current git status.
