@@ -21,10 +21,11 @@
  * along with semanticcms-autogit-servlet.  If not, see <https://www.gnu.org/licenses/>.
  */
 module com.semanticcms.autogit.servlet {
-  exports com.semanticcms.autogit.servlet;
   // Direct
   requires com.aoapps.lang; // <groupId>com.aoapps</groupId><artifactId>ao-lang</artifactId>
   requires com.aoapps.servlet.util; // <groupId>com.aoapps</groupId><artifactId>ao-servlet-util</artifactId>
   requires jakarta.servlet; // <groupId>jakarta.servlet</groupId><artifactId>jakarta.servlet-api</artifactId>
   requires com.semanticcms.autogit.model; // <groupId>com.semanticcms</groupId><artifactId>semanticcms-autogit-model</artifactId>
+
+  exports com.semanticcms.autogit.servlet;
 }
